@@ -15,7 +15,7 @@ export const profile = {
   location: 'Jamshoro / Ghotki, Pakistan',
   nationality: 'Pakistani',
   siteUrl: 'https://www.shoaibali.site',
-  siteLabel: 'shoaibali.site',
+  siteLabel: 'shoaib.site',
   github: 'https://github.com/Shaoib72',
   githubLabel: 'Shaoib72',
   linkedin: 'https://www.linkedin.com/in/shaoib-ali-shahani-660a1425b',
