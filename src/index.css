@@ -226,11 +226,19 @@ ul {
 }
 
 .app > main,
-.app > .nav,
-.app > .footer,
-.app > .scroll-progress {
+.app > .footer {
   position: relative;
   z-index: 2;
+}
+
+.app > .nav {
+  position: fixed;
+  z-index: 60;
+}
+
+.app > .scroll-progress {
+  position: fixed;
+  z-index: 70;
 }
 
 .glass {
@@ -301,18 +309,20 @@ ul {
 
 /* ——— Nav ——— */
 .nav {
-  position: fixed;
+  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 50;
+  width: 100%;
+  z-index: 60;
   height: var(--nav-h);
   display: flex;
   align-items: center;
   transition: background 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
   border-bottom: 1px solid transparent;
-  background: rgba(244, 247, 252, 0.72);
+  background: rgba(244, 247, 252, 0.85);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .nav.is-scrolled {
