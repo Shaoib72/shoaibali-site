@@ -10,10 +10,12 @@ export const profile = {
   aboutTitle: 'Curious enough to question.\nCommitted enough to ship.',
   aboutBody:
     'My background is in data science with hands-on machine learning, computer vision, and IoT. I care about work that is useful — phishing detection, crop disease models, healthcare prediction, and tools people can actually use.',
-  email: 'shahanis898@gmail.com',
+  email: 'contact@shoaibali.site',
   phone: '+92 315 3687109',
   location: 'Jamshoro / Ghotki, Pakistan',
   nationality: 'Pakistani',
+  siteUrl: 'https://www.shoaibali.site',
+  siteLabel: 'shoaibali.site',
   github: 'https://github.com/Shaoib72',
   githubLabel: 'Shaoib72',
   linkedin: 'https://www.linkedin.com/in/shaoib-ali-shahani-660a1425b',

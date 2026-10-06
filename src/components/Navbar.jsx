@@ -32,7 +32,7 @@ export default function Navbar() {
             go('home');
           }}
         >
-          <span className="logo-mark">shoaib.dev_</span>
+          <span className="logo-mark">{profile.siteLabel}</span>
         </a>
 
         <nav className="nav-links" aria-label="Primary">

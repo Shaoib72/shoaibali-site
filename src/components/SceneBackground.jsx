@@ -21,8 +21,8 @@ function MouseParallax({ paused, mouse }) {
     target.current.x = mx * 1.4;
     target.current.y = 0.35 + my * 0.7;
     target.current.z = 10;
-    camera.position.lerp(target.current, 1 - Math.exp(-3 * delta));
-    camera.lookAt(mx * 0.5, my * 0.3, -6);
+    camera.position.lerp(target.current, 1 - Math.exp(-1.2 * delta));
+    camera.lookAt(mx * 0.35, my * 0.2, -6);
   });
 
   return null;
@@ -47,11 +47,11 @@ function RingTunnel({ paused }) {
   useFrame((_, delta) => {
     if (!group.current || paused) return;
     group.current.children.forEach((mesh) => {
-      mesh.position.z += delta * 5.5;
-      mesh.rotation.z += delta * mesh.userData.spin;
+      mesh.position.z += delta * 1.6;
+      mesh.rotation.z += delta * mesh.userData.spin * 0.35;
       if (mesh.position.z > 4) mesh.position.z -= count * spacing;
     });
-    group.current.rotation.z = Math.sin(performance.now() * 0.0002) * 0.08;
+    group.current.rotation.z = Math.sin(performance.now() * 0.00008) * 0.05;
   });
 
   return (
@@ -98,10 +98,10 @@ function FloatingSolids({ paused }) {
 
   useFrame((_, delta) => {
     if (!group.current || paused) return;
-    group.current.rotation.y += delta * 0.08;
+    group.current.rotation.y += delta * 0.025;
     group.current.children.forEach((child, i) => {
-      child.rotation.x += delta * (0.2 + i * 0.03);
-      child.rotation.y += delta * (0.15 + i * 0.02);
+      child.rotation.x += delta * (0.06 + i * 0.01);
+      child.rotation.y += delta * (0.05 + i * 0.008);
     });
   });
 
@@ -110,9 +110,9 @@ function FloatingSolids({ paused }) {
       {items.map((item, i) => (
         <Float
           key={i}
-          speed={paused ? 0 : 1.4 + (i % 3) * 0.4}
-          rotationIntensity={paused ? 0 : 0.6}
-          floatIntensity={paused ? 0 : 0.9}
+          speed={paused ? 0 : 0.45 + (i % 3) * 0.12}
+          rotationIntensity={paused ? 0 : 0.25}
+          floatIntensity={paused ? 0 : 0.35}
         >
           <mesh position={item.pos} scale={item.s}>
             {item.geo === 'ico' && <icosahedronGeometry args={[1, 0]} />}
@@ -165,8 +165,8 @@ function NeuralNet({ paused }) {
 
   useFrame((_, delta) => {
     if (!group.current || paused) return;
-    group.current.rotation.y += delta * 0.04;
-    group.current.rotation.x = Math.sin(performance.now() * 0.0003) * 0.06;
+    group.current.rotation.y += delta * 0.012;
+    group.current.rotation.x = Math.sin(performance.now() * 0.0001) * 0.04;
   });
 
   return (
@@ -207,11 +207,11 @@ function ParticleStream({ paused }) {
     if (!ref.current || paused) return;
     const pos = ref.current.geometry.attributes.position.array;
     for (let i = 2; i < pos.length; i += 3) {
-      pos[i] += delta * 5.5;
+      pos[i] += delta * 1.5;
       if (pos[i] > 5) pos[i] = -40;
     }
     ref.current.geometry.attributes.position.needsUpdate = true;
-    ref.current.rotation.y += delta * 0.02;
+    ref.current.rotation.y += delta * 0.006;
   });
 
   return (
@@ -235,7 +235,7 @@ function HorizonGrid({ paused }) {
   const ref = useRef(null);
   useFrame((_, delta) => {
     if (!ref.current || paused) return;
-    ref.current.position.z = ((performance.now() * 0.0012) % 2) - 1;
+    ref.current.position.z = ((performance.now() * 0.00035) % 2) - 1;
   });
 
   return (
@@ -263,18 +263,18 @@ function CentralCore({ paused }) {
   useFrame((_, delta) => {
     if (paused) return;
     if (core.current) {
-      core.current.rotation.y += delta * 0.35;
-      core.current.rotation.x += delta * 0.12;
+      core.current.rotation.y += delta * 0.1;
+      core.current.rotation.x += delta * 0.04;
     }
     if (ring.current) {
-      ring.current.rotation.z -= delta * 0.45;
-      ring.current.rotation.x = Math.sin(performance.now() * 0.0008) * 0.4;
+      ring.current.rotation.z -= delta * 0.12;
+      ring.current.rotation.x = Math.sin(performance.now() * 0.00025) * 0.25;
     }
   });
 
   return (
     <group position={[0, 0.3, -9]}>
-      <Float speed={paused ? 0 : 2} floatIntensity={paused ? 0 : 1.2} rotationIntensity={0.3}>
+      <Float speed={paused ? 0 : 0.6} floatIntensity={paused ? 0 : 0.4} rotationIntensity={0.12}>
         <mesh ref={core}>
           <icosahedronGeometry args={[1.15, 1]} />
           <meshStandardMaterial
@@ -339,7 +339,7 @@ function Scene({ paused, mouse }) {
         count={80}
         scale={[18, 10, 20]}
         size={3}
-        speed={paused ? 0 : 0.6}
+        speed={paused ? 0 : 0.2}
         opacity={0.55}
         color={GOLD}
       />
