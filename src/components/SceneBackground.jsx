@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Grid, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
@@ -190,9 +190,9 @@ function NeuralNet({ paused }) {
   );
 }
 
-function ParticleStream({ paused }) {
+function ParticleStream({ paused, compact }) {
   const ref = useRef(null);
-  const count = 900;
+  const count = compact ? 320 : 900;
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i += 1) {
@@ -317,7 +317,7 @@ function CentralCore({ paused }) {
   );
 }
 
-function Scene({ paused, mouse }) {
+function Scene({ paused, mouse, compact }) {
   return (
     <>
       <color attach="background" args={[BG]} />
@@ -326,19 +326,19 @@ function Scene({ paused, mouse }) {
       <directionalLight position={[6, 8, 4]} intensity={1.1} color="#fff8f0" />
       <pointLight position={[-5, 3, -2]} intensity={1.4} color={CORAL} />
       <pointLight position={[5, -2, -6]} intensity={1.2} color={TEAL} />
-      <pointLight position={[0, 4, -10]} intensity={1} color={GOLD} />
+      {!compact && <pointLight position={[0, 4, -10]} intensity={1} color={GOLD} />}
 
-      <MouseParallax paused={paused} mouse={mouse} />
+      {!compact && <MouseParallax paused={paused} mouse={mouse} />}
       <HorizonGrid paused={paused} />
       <RingTunnel paused={paused} />
       <CentralCore paused={paused} />
-      <FloatingSolids paused={paused} />
-      <NeuralNet paused={paused} />
-      <ParticleStream paused={paused} />
+      {!compact && <FloatingSolids paused={paused} />}
+      {!compact && <NeuralNet paused={paused} />}
+      <ParticleStream paused={paused} compact={compact} />
       <Sparkles
-        count={80}
+        count={compact ? 36 : 80}
         scale={[18, 10, 20]}
-        size={3}
+        size={compact ? 2 : 3}
         speed={paused ? 0 : 0.2}
         opacity={0.55}
         color={GOLD}
@@ -347,32 +347,49 @@ function Scene({ paused, mouse }) {
   );
 }
 
+function useIsCompact() {
+  const [compact, setCompact] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const onChange = () => setCompact(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  return compact;
+}
+
 export default function SceneBackground() {
   const { motionOn } = useMotionPref();
   const mouse = useRef({ x: 0, y: 0 });
+  const compact = useIsCompact();
   const reduce =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const paused = !motionOn || reduce;
 
   useEffect(() => {
-    if (paused) return undefined;
+    if (paused || compact) return undefined;
     const onMove = (e) => {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('pointermove', onMove, { passive: true });
     return () => window.removeEventListener('pointermove', onMove);
-  }, [paused]);
+  }, [paused, compact]);
 
   return (
     <div className="scene-bg scene-bg--full" aria-hidden>
       <Canvas
-        camera={{ position: [0, 0.4, 10], fov: 48, near: 0.1, far: 90 }}
-        dpr={[1, 1.75]}
-        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        camera={{ position: [0, 0.4, 10], fov: compact ? 52 : 48, near: 0.1, far: 90 }}
+        dpr={compact ? [1, 1.25] : [1, 1.75]}
+        gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance' }}
       >
-        <Scene paused={paused} mouse={mouse} />
+        <Scene paused={paused} mouse={mouse} compact={compact} />
       </Canvas>
       <div className="scene-veil" />
     </div>

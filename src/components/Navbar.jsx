@@ -13,6 +13,19 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle('nav-open', open);
+    return () => document.body.classList.remove('nav-open');
+  }, [open]);
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 1024) setOpen(false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const go = (id) => {
     setOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: motionOn ? 'smooth' : 'auto' });
@@ -65,14 +78,28 @@ export default function Navbar() {
           <button
             type="button"
             className="menu-btn"
-            aria-label="Menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? 'Close' : 'Menu'}
+            <span className="menu-btn-bars" aria-hidden>
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="menu-btn-label">{open ? 'Close' : 'Menu'}</span>
           </button>
         </div>
       </div>
+
+      {open && (
+        <button
+          type="button"
+          className="nav-backdrop"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+        />
+      )}
     </header>
   );
 }
