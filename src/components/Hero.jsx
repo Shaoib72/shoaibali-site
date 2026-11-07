@@ -115,7 +115,13 @@ export default function Hero() {
             }
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <img src={profile.photo} alt={profile.name} className="hero-photo" />
+            <img
+              src={profile.photo}
+              alt={`Portrait of ${profile.name}`}
+              className="hero-photo"
+              fetchPriority="high"
+              decoding="async"
+            />
             <div className="hero-photo-glow" />
           </motion.div>
           <motion.div

@@ -531,36 +531,54 @@ body.nav-open {
 .hero-visual {
   position: relative;
   display: grid;
-  gap: 1rem;
+  gap: 0;
   justify-items: end;
 }
 
 .hero-photo-wrap {
   position: relative;
-  width: min(100%, 340px);
+  width: min(100%, 390px);
   aspect-ratio: 1;
-  border-radius: 28px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: var(--shadow-lg), 0 0 0 8px rgba(42, 157, 143, 0.08);
+  display: grid;
+  place-items: center;
+}
+
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 3% 7% 30%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.42) 45%, rgba(255, 255, 255, 0) 68%),
+    radial-gradient(circle at 62% 74%, rgba(42, 157, 143, 0.14), transparent 55%);
+  filter: blur(12px);
+  pointer-events: none;
 }
 
 .hero-photo {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 36px rgba(21, 32, 51, 0.16));
 }
 
 .hero-photo-glow {
   position: absolute;
-  inset: auto -20% -30% -20%;
-  height: 55%;
-  background: radial-gradient(circle, rgba(231, 111, 81, 0.35), transparent 70%);
+  inset: auto 8% 2%;
+  height: 38%;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, rgba(231, 111, 81, 0.26), transparent 66%);
+  filter: blur(18px);
   pointer-events: none;
 }
 
 .hero-meta-card {
-  width: min(100%, 340px);
+  position: relative;
+  z-index: 2;
+  width: min(100%, 390px);
+  margin-top: -1.35rem;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.35rem 1rem;

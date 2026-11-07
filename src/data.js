@@ -18,7 +18,7 @@ export const profile = {
   github: 'https://github.com/Shaoib72',
   githubLabel: 'Shaoib72',
   linkedin: 'https://www.linkedin.com/in/shaoib-ali-shahani-660a1425b',
-  photo: '/profile.jpg',
+  photo: '/profile-cutout.webp',
   cv: '/Shoaib_Ali_Shahani_CV.pdf',
   contactTitle: "Let's talk data and AI.",
   contactBody:
