@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Component, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Grid, Sparkles } from '@react-three/drei';
+import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { useMotionPref } from '../context/MotionContext';
 
@@ -163,6 +164,13 @@ function NeuralNet({ paused }) {
     return { nodes: pts, links: edges };
   }, []);
 
+  useEffect(
+    () => () => {
+      links.forEach((link) => link.geo.dispose());
+    },
+    [links]
+  );
+
   useFrame((_, delta) => {
     if (!group.current || paused) return;
     group.current.rotation.y += delta * 0.012;
@@ -233,7 +241,7 @@ function ParticleStream({ paused, compact }) {
 
 function HorizonGrid({ paused }) {
   const ref = useRef(null);
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!ref.current || paused) return;
     ref.current.position.z = ((performance.now() * 0.00035) % 2) - 1;
   });
@@ -363,14 +371,27 @@ function useIsCompact() {
   return compact;
 }
 
+class SceneBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 export default function SceneBackground() {
   const { motionOn } = useMotionPref();
   const mouse = useRef({ x: 0, y: 0 });
   const compact = useIsCompact();
-  const reduce =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const paused = !motionOn || reduce;
+  const reduce = useReducedMotion();
+  const paused = !motionOn || Boolean(reduce);
 
   useEffect(() => {
     if (paused || compact) return undefined;
@@ -384,13 +405,16 @@ export default function SceneBackground() {
 
   return (
     <div className="scene-bg scene-bg--full" aria-hidden>
-      <Canvas
-        camera={{ position: [0, 0.4, 10], fov: compact ? 52 : 48, near: 0.1, far: 90 }}
-        dpr={compact ? [1, 1.25] : [1, 1.75]}
-        gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance' }}
-      >
-        <Scene paused={paused} mouse={mouse} compact={compact} />
-      </Canvas>
+      <SceneBoundary>
+        <Canvas
+          camera={{ position: [0, 0.4, 10], fov: compact ? 52 : 48, near: 0.1, far: 90 }}
+          dpr={compact ? [1, 1.25] : [1, 1.5]}
+          frameloop={paused ? 'demand' : 'always'}
+          gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance' }}
+        >
+          <Scene paused={paused} mouse={mouse} compact={compact} />
+        </Canvas>
+      </SceneBoundary>
       <div className="scene-veil" />
     </div>
   );

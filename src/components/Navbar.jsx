@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { navLinks, profile } from '../data';
 import { useMotionPref } from '../context/MotionContext';
+import { scrollToTarget, startScroll, stopScroll } from '../lib/scroll';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -15,6 +16,8 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.classList.toggle('nav-open', open);
+    if (open) stopScroll();
+    else startScroll();
     return () => document.body.classList.remove('nav-open');
   }, [open]);
 
@@ -22,13 +25,24 @@ export default function Navbar() {
     const onResize = () => {
       if (window.innerWidth > 1024) setOpen(false);
     };
+    const onKey = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('keydown', onKey);
+    };
   }, []);
 
   const go = (id) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: motionOn ? 'smooth' : 'auto' });
+    startScroll();
+    // Wait for the menu's scroll lock to be released before measuring the target.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => scrollToTarget(id));
+    });
   };
 
   return (
@@ -49,6 +63,14 @@ export default function Navbar() {
         </a>
 
         <nav className="nav-links" aria-label="Primary">
+          <button
+            type="button"
+            className="nav-links-motion"
+            onClick={toggleMotion}
+            aria-pressed={motionOn}
+          >
+            Motion {motionOn ? 'on' : 'off'}
+          </button>
           {navLinks.map((link) => (
             <a
               key={link.id}

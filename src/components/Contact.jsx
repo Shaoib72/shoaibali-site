@@ -32,7 +32,7 @@ export default function Contact() {
               LinkedIn
             </a>
             <a href={profile.cv} download>
-              Curriculum vitae → View PDF
+              Download CV (PDF)
             </a>
           </div>
         </motion.div>

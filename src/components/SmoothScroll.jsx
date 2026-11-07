@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { useMotionPref } from '../context/MotionContext';
+import { registerLenis } from '../lib/scroll';
 
 export default function SmoothScroll({ children }) {
   const { motionOn } = useMotionPref();
@@ -14,6 +15,7 @@ export default function SmoothScroll({ children }) {
       smoothWheel: true,
       touchMultiplier: 1.8,
     });
+    const unregister = registerLenis(lenis);
 
     let frame;
     const raf = (time) => {
@@ -26,6 +28,7 @@ export default function SmoothScroll({ children }) {
     return () => {
       cancelAnimationFrame(frame);
       lenis.destroy();
+      unregister();
       document.documentElement.classList.remove('lenis', 'lenis-smooth');
     };
   }, [motionOn]);

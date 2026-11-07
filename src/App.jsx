@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,27 +10,34 @@ import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import SmoothScroll from './components/SmoothScroll';
 import ScrollProgress from './components/ScrollProgress';
-import Ambient from './components/Ambient';
 import { profile } from './data';
 import { useMotionPref } from './context/MotionContext';
+import { scrollToTop } from './lib/scroll';
 
 const SceneBackground = lazy(() => import('./components/SceneBackground'));
 
 export default function App() {
   const { motionOn } = useMotionPref();
+  const [sceneReady, setSceneReady] = useState(false);
 
-  const toTop = () => {
-    window.scrollTo({ top: 0, behavior: motionOn ? 'smooth' : 'auto' });
-  };
+  useEffect(() => {
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setSceneReady(true), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setSceneReady(true), 900);
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
     <SmoothScroll>
-      <div className="app light-theme">
+      <div className="app">
         <ScrollProgress />
-        <Ambient />
-        <Suspense fallback={null}>
-          <SceneBackground />
-        </Suspense>
+        {sceneReady && (
+          <Suspense fallback={null}>
+            <SceneBackground />
+          </Suspense>
+        )}
         <Navbar />
         <main id="main">
           <Hero />
@@ -48,7 +55,7 @@ export default function App() {
             <motion.button
               type="button"
               className="to-top"
-              onClick={toTop}
+              onClick={scrollToTop}
               whileHover={motionOn ? { y: -3, scale: 1.04 } : undefined}
               whileTap={motionOn ? { scale: 0.96 } : undefined}
             >

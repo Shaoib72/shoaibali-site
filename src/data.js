@@ -14,7 +14,6 @@ export const profile = {
   phone: '+92 315 3687109',
   location: 'Jamshoro / Ghotki, Pakistan',
   nationality: 'Pakistani',
-  siteUrl: 'https://www.shoaibali.site',
   siteLabel: 'shoaib.site',
   github: 'https://github.com/Shaoib72',
   githubLabel: 'Shaoib72',
@@ -108,14 +107,14 @@ export const works = [
 ];
 
 export const skills = [
-  { name: 'Python', level: 90, side: 'left' },
-  { name: 'Machine Learning', level: 88, side: 'left' },
-  { name: 'Deep Learning / CV', level: 82, side: 'left' },
-  { name: 'Scikit-learn / OpenCV', level: 85, side: 'left' },
-  { name: 'Flutter', level: 78, side: 'right' },
-  { name: 'Django', level: 75, side: 'right' },
-  { name: 'n8n Automation', level: 80, side: 'right' },
-  { name: 'Power BI / Excel', level: 84, side: 'right' },
+  { name: 'Python', level: 90 },
+  { name: 'Machine Learning', level: 88 },
+  { name: 'Deep Learning / CV', level: 82 },
+  { name: 'Scikit-learn / OpenCV', level: 85 },
+  { name: 'Flutter', level: 78 },
+  { name: 'Django', level: 75 },
+  { name: 'n8n Automation', level: 80 },
+  { name: 'Power BI / Excel', level: 84 },
 ];
 
 export const skillGroups = [

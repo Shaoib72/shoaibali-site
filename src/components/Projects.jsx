@@ -52,7 +52,7 @@ export default function Projects() {
               <div className="work-foot">
                 <span className="work-status">{work.status}</span>
                 <a href={work.href} target="_blank" rel="noreferrer" className="work-link">
-                  View on GitHub →
+                  GitHub profile →
                 </a>
               </div>
             </motion.article>

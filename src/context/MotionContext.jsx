@@ -5,13 +5,22 @@ const MotionContext = createContext(null);
 export function MotionProvider({ children }) {
   const [motionOn, setMotionOn] = useState(() => {
     if (typeof window === 'undefined') return true;
-    const saved = localStorage.getItem('motion');
-    return saved === null ? true : saved === 'on';
+    try {
+      const saved = localStorage.getItem('motion');
+      if (saved !== null) return saved === 'on';
+      return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      return true;
+    }
   });
 
   useEffect(() => {
     document.documentElement.dataset.motion = motionOn ? 'on' : 'off';
-    localStorage.setItem('motion', motionOn ? 'on' : 'off');
+    try {
+      localStorage.setItem('motion', motionOn ? 'on' : 'off');
+    } catch {
+      // storage can be unavailable in private browsing
+    }
   }, [motionOn]);
 
   return (

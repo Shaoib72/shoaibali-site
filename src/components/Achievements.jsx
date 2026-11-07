@@ -1,11 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { certifications, statsMeta } from '../data';
+import { useMotionPref } from '../context/MotionContext';
 
 function useCountUp(target, active, decimals = 0) {
   const [value, setValue] = useState(0);
+  const { motionOn } = useMotionPref();
+  const reduce = useReducedMotion();
+  const canAnimate = motionOn && !reduce;
+
   useEffect(() => {
-    if (!active) return undefined;
+    if (!canAnimate) {
+      setValue(target);
+      return undefined;
+    }
+    if (!active) {
+      setValue(0);
+      return undefined;
+    }
     let frame;
     const start = performance.now();
     const duration = 1200;
@@ -17,7 +29,8 @@ function useCountUp(target, active, decimals = 0) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [target, active, decimals]);
+  }, [target, active, decimals, canAnimate]);
+
   return value;
 }
 
