@@ -13,8 +13,12 @@ export const profile = {
   email: 'contact@shoaibali.site',
   phone: '+92 315 3687109',
   location: 'Jamshoro / Ghotki, Pakistan',
+  locationShort: 'Jamshoro, Pakistan',
+  timezone: 'PKT · UTC+5',
   nationality: 'Pakistani',
-  siteLabel: 'shoaib.site',
+  availability: 'Open to AI / ML roles',
+  responseTime: 'Within 24–48 hours',
+  siteLabel: 'shoaibali.site',
   github: 'https://github.com/Shaoib72',
   githubLabel: 'Shaoib72',
   linkedin: 'https://www.linkedin.com/in/shaoib-ali-shahani-660a1425b',
@@ -54,6 +58,7 @@ export const works = [
     dates: 'Oct 2025 – Nov 2025',
     kicker: 'SECURITY · ML',
     title: 'PhishingGuard',
+    featured: true,
     blurb:
       'Production-ready AI cybersecurity platform with Django and scikit-learn. Random Forest on 30 URL features (SSL, domain age, IP presence, length, subdomain depth) achieved 99.2% phishing detection accuracy.',
     tags: ['Django', 'Scikit-learn', 'Random Forest', 'Cybersecurity'],
@@ -106,31 +111,25 @@ export const works = [
   },
 ];
 
-export const skills = [
-  { name: 'Python', level: 90 },
-  { name: 'Machine Learning', level: 88 },
-  { name: 'Deep Learning / CV', level: 82 },
-  { name: 'Scikit-learn / OpenCV', level: 85 },
-  { name: 'Flutter', level: 78 },
-  { name: 'Django', level: 75 },
-  { name: 'n8n Automation', level: 80 },
-  { name: 'Power BI / Excel', level: 84 },
-];
-
 export const skillGroups = [
   {
     title: 'Intelligence',
+    blurb: 'Models, vision, and evaluation.',
     items: ['Python', 'Scikit-learn', 'Deep Learning', 'OpenCV', 'CNNs / RNNs', 'AI Agents'],
   },
   {
     title: 'Product',
+    blurb: 'Interfaces and workflows people use.',
     items: ['Flutter', 'Django', 'React', 'UI / UX', 'n8n'],
   },
   {
     title: 'Data & Systems',
+    blurb: 'Pipelines, reporting, and infrastructure.',
     items: ['Power BI', 'Pandas / NumPy', 'IoT', 'Databases', 'Networking'],
   },
 ];
+
+export const exploring = ['RAG systems', 'LLM agents', 'MLOps', 'Edge inference'];
 
 export const education = [
   {

@@ -1,14 +1,20 @@
 import { motion } from 'framer-motion';
-import { education, experience } from '../data';
+import { education, experience, profile } from '../data';
+import { useMotionPref } from '../context/MotionContext';
+import SectionHead from './SectionHead';
 
 export default function Education() {
+  const { motionOn } = useMotionPref();
+
   return (
     <section className="section" id="path">
       <div className="container">
-        <div className="section-head">
-          <p className="section-kicker">04 — Path</p>
-          <h2 className="section-title">Education & experience</h2>
-        </div>
+        <SectionHead
+          index="04"
+          label="Path"
+          title="Education & experience"
+          lead="A foundation in teaching and IT, now focused on applied AI and data science."
+        />
 
         <div className="path-grid">
           <div>
@@ -18,7 +24,7 @@ export default function Education() {
                 <motion.article
                   key={item.title}
                   className="timeline-card glass"
-                  initial={{ opacity: 0, x: -16 }}
+                  initial={motionOn ? { opacity: 0, x: -16 } : false}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
@@ -39,7 +45,7 @@ export default function Education() {
                 <motion.article
                   key={`${item.role}-${item.org}`}
                   className="timeline-card glass"
-                  initial={{ opacity: 0, x: 16 }}
+                  initial={motionOn ? { opacity: 0, x: 16 } : false}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
@@ -58,6 +64,12 @@ export default function Education() {
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="section-foot">
+          <a href={profile.cv} className="link-arrow" download>
+            Download full CV <span aria-hidden>↓</span>
+          </a>
         </div>
       </div>
     </section>

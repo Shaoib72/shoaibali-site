@@ -1,19 +1,24 @@
 import { motion } from 'framer-motion';
 import { languages, profile } from '../data';
+import { useMotionPref } from '../context/MotionContext';
+import SectionHead from './SectionHead';
 
 export default function About() {
+  const { motionOn } = useMotionPref();
+
   return (
     <section className="section" id="about">
       <div className="container">
-        <div className="section-head">
-          <p className="section-kicker">01 — About</p>
-          <h2 className="section-title">Who I am</h2>
-        </div>
+        <SectionHead
+          index="01"
+          label="About"
+          title="A scientist's rigor, a builder's instinct."
+        />
 
         <div className="about-grid">
           <motion.div
             className="about-story glass"
-            initial={{ opacity: 0, y: 24 }}
+            initial={motionOn ? { opacity: 0, y: 24 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
@@ -36,7 +41,7 @@ export default function About() {
           <div className="about-side">
             <motion.div
               className="info-card glass"
-              initial={{ opacity: 0, y: 20 }}
+              initial={motionOn ? { opacity: 0, y: 20 } : false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
@@ -76,7 +81,7 @@ export default function About() {
 
             <motion.div
               className="info-card glass"
-              initial={{ opacity: 0, y: 20 }}
+              initial={motionOn ? { opacity: 0, y: 20 } : false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.14 }}
